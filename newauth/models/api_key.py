@@ -97,7 +97,12 @@ class APIKey(db.Model):
                 if self.expires != current_app.config['EVE']['requirements'][mask_name]['expires']:
                     self.set_status(APIKeyStatus.invalid_expiration)
                 else:
-                    self.set_status(APIKeyStatus.valid)
+                    # start niko insert
+                    if self.type != current_app.config['EVE']['requirements'][mask_name]['type']:
+                        self.setstatus(APIKeyStatus.invalid)
+                    else:
+                    # end niko insert
+                        self.set_status(APIKeyStatus.valid)
         if save:
             db.session.add(self)
             db.session.commit()
